@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Excluir Pedido</h2>
+<p>Tem certeza que deseja excluir o <strong>Pedido #{{ object.id }}</strong> de {{ object.cliente }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+    <a href="{% url 'pedidos_lista' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

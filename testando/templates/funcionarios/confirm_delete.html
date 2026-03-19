@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Funcionário{% endblock %}
+
+{% block content %}
+
+<h2>Confirmar exclusão</h2>
+
+<p>Deseja realmente excluir este funcionário?</p>
+
+<form method="post">
+{% csrf_token %}
+
+<button type="submit" class="btn btn-danger">
+Sim, excluir
+</button>
+
+<a href="{% url 'funcionarios_lista' %}" class="btn btn-secondary">
+Cancelar
+</a>
+
+</form>
+
+{% endblock %}

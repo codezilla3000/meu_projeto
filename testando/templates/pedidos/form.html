@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+Novo Pedido
+{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        {{ form.cliente.label_tag }}
+        {{ form.cliente }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.funcionario.label_tag }}
+        {{ form.funcionario }}
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Criar Pedido
+    </button>
+
+    <a href="{% url 'pedidos_lista' %}" class="btn btn-secondary">
+        Cancelar
+    </a>
+</form>
+
+{% endblock %}

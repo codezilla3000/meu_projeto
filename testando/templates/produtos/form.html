@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}
+Produto
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Cadastro de Produto</h2>
+
+<form method="post">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label class="form-label">Nome</label>
+{{ form.nome }}
+</div>
+
+<div class="mb-3">
+<label class="form-label">Tipo</label>
+
+<div class="d-flex gap-2">
+
+{{ form.tipo }}
+
+<button type="button"
+        class="btn btn-outline-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#modalTipo">
++ Novo Tipo
+</button>
+
+</div>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Descrição</label>
+{{ form.descricao }}
+</div>
+
+<div class="mb-3">
+<label class="form-label">Preço</label>
+{{ form.preco }}
+</div>
+
+<div class="mb-3">
+<label class="form-label">Quantidade em Estoque</label>
+{{ form.quantidade_estoque }}
+</div>
+
+<button type="submit" class="btn btn-success">
+Salvar
+</button>
+
+<a href="{% url 'produtos_lista' %}" class="btn btn-secondary">
+Cancelar
+</a>
+
+</form>
+
+<!-- MODAL CRIAR TIPO -->
+<div class="modal fade" id="modalTipo" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5 class="modal-title">Novo Tipo</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<form id="formTipo">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Nome</label>
+<input type="text" name="nome" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Descrição</label>
+<input type="text" name="descricao" class="form-control" required>
+</div>
+
+<button type="submit" class="btn btn-success">
+Salvar Tipo
+</button>
+
+</form>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+document.getElementById("formTipo").addEventListener("submit", function(e){
+    e.preventDefault()
+    let formData = new FormData(this)
+    fetch("{% url 'criar_tipo_ajax' %}", {
+        method:"POST",
+        body:formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        let select = document.getElementById("id_tipo")
+        let option = new Option(data.nome, data.id, true, true)
+        select.add(option)
+        let modal = bootstrap.Modal.getInstance(document.getElementById('modalTipo'))
+        modal.hide()
+        document.getElementById("formTipo").reset()
+    })
+})
+</script>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pedido #{{ pedido.id }}
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Pedido #{{ pedido.id }}</h2>
+
+<p><strong>Cliente:</strong> {{ pedido.cliente }}</p>
+<p><strong>Funcionário:</strong> {{ pedido.funcionario }}</p>
+<p><strong>Status:</strong> {{ pedido.get_status_display }}</p>
+
+<a href="{% url 'pedido_add_item' pedido.id %}" class="btn btn-success mb-3">
+    Adicionar Produto
+</a>
+
+<h4 class="mt-4">Itens do Pedido</h4>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Subtotal</th>
+            <th>Ações</th> <!-- Nova coluna para ações -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in pedido.itens.all %}
+        <tr>
+            <td>{{ item.produto.nome }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>R$ {{ item.preco_unitario }}</td>
+            <td>R$ {{ item.subtotal }}</td>
+            <td>
+                <form method="post" action="{% url 'remover_item_pedido' item.pk %}" style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        Remover
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">
+                Nenhum item no pedido
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4 class="text-end">
+    Total: R$ {{ pedido.total }}
+</h4>
+
+<a href="{% url 'pedidos_lista' %}" class="btn btn-secondary mt-3">
+    Voltar
+</a>
+
+{% endblock %}
