@@ -254,3 +254,4 @@ def devolver_estoque_ao_deletar_item(sender, instance, **kwargs):
     estoque = instance.produto.estoques.first()
     if estoque:
         estoque.adicionar(instance.quantidade)
+# Lógica de controle de estoque e integridade de pedidos implementada.
